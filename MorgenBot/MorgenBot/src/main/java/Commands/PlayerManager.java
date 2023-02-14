@@ -25,7 +25,7 @@ public class PlayerManager {
 
     public GuildMusicManager getMusicManager(Guild guild){
         return this.musicManagers.computeIfAbsent(guild.getIdLong(), (guildId) -> {
-            final GuildMusicManager guildMusicManager = new GuildMusicManager(this.audioPlayerManager);
+            final GuildMusicManager guildMusicManager = new GuildMusicManager(this.audioPlayerManager, guild);
             guild.getAudioManager().setSendingHandler(guildMusicManager.getSendHandler());
             return guildMusicManager;
         });
@@ -51,7 +51,9 @@ public class PlayerManager {
                 for (final AudioTrack track : tracks) {
                     musicManager.scheduler.queue(track);
                 }
-                channel.sendMessage(String.format("Ставлю плейлист: %s, в нем %s треков", playlist.getName(),String.valueOf(tracks.size()))).queue();
+                channel.sendMessage(String.format("Ставлю плейлист: ")).queue();
+                EmbedCreator.PlayListEmbed(playlist,trackUrl,channel);
+
             }
 
             @Override

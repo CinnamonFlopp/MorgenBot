@@ -25,6 +25,7 @@ public class CommandManager extends ListenerAdapter {
     {
         try {
             if (!event.getAuthor().isBot()) {
+
                 String[] argument = event.getMessage().getContentRaw().split(" ");
                 Message message = event.getMessage();
                 MessageChannel textChannel = event.getChannel();
@@ -59,9 +60,8 @@ public class CommandManager extends ListenerAdapter {
                             textChannel.sendMessage("Не музицирую").queue();
                             return;
                         }
-                        musicManager.scheduler.nextTrack();
                         textChannel.sendMessage("Cкипаю").queue();
-                        textChannel.sendMessage("Теперь играет: " + audioPlayer.getPlayingTrack().getInfo().title).queue();
+                        musicManager.scheduler.nextTrack();
                         break;
                     case "!stop":
                         musicManager.scheduler.audioPlayer.stopTrack();
@@ -77,12 +77,7 @@ public class CommandManager extends ListenerAdapter {
                         textChannel.sendMessageFormat("Теперь я **%s**", newRepeating ? "повторяю" : "не повторяю").queue();
                         break;
                     case  "!help":
-                        textChannel.sendMessageFormat("Я - Бот - Морген \n" +
-                                "Умею всё, но я занятой, так что отвечаю только на эти сообщения:\n" +
-                                "!play *ссылка или поиск по ютубу*" +" - и я сыграю любой трек, но особенно буду рад собственным\n" +
-                                "!skip - я скипну трек\n" +
-                                "!stop - и я оффну\n" +
-                                "!repeat - буду повторять очередь, пока ты снова не скажешь мне !repeat\n").queue();
+                        EmbedCreator.HelpEmbed(textChannel);
 
 
                 }
