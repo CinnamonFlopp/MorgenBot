@@ -27,20 +27,30 @@ public abstract class EmbedCreator {
 
 	public static void TrackEmbed(AudioTrack track, String link, MessageChannel channel) {
 		int index = link.indexOf('=') + 1;
+		int index1 = link.indexOf('&');
+		String thumbnail;
 		if (index == 0)
 		{
 			index = link.lastIndexOf('/') + 1;
 		}
 		System.out.println(index);
-		String thumbnail = link.substring(index);
+		if (index1 == -1)
+		{
+			thumbnail = link.substring(index);
+		}
+		else
+		{
+
+			thumbnail = link.substring(index,index1);
+		}
 		System.out.println(thumbnail);
 		thumbnail = "https://img.youtube.com/vi/" + thumbnail + "/maxresdefault.jpg";
 		System.out.println(thumbnail);
 		EmbedBuilder embedMusic = new EmbedBuilder()
-				.setTitle(track.getInfo().title)
-				.setDescription(Utils.DurationFormatLong(track.getInfo().length))
+				.setTitle(Utils.DurationFormatLong(track.getInfo().length))
+				.setDescription("[" + track.getInfo().title + "]" + "(" + link + ")")
 				.setAuthor("от " + track.getInfo().author)
-				.addField("", link,true)
+				//.addField("", link,true)
 				//.addInlineField("An inline field", "More text")
 				//.addInlineField("Another inline field", "Even more text")
 				.setColor(2895667)
@@ -54,10 +64,11 @@ public abstract class EmbedCreator {
 		EmbedBuilder embedMusic = new EmbedBuilder()
 				.setTitle("Я бот - Морген")
 				.setDescription("**Умею всё, но я занятой, так что отвечаю только на эти сообщения:** \n" +
-						"**!play** - *ссылка или поиск по ютубу* - и я сыграю любой трек, но особенно буду рад собственным хитам \n" +
+						"**!play** *ссылка или поиск по ютубу* - и я сыграю любой трек, но особенно буду рад собственным хитам \n" +
 						"**!skip** - я скипну трек\n" +
 						"**!stop** - и я оффну\n" +
 						"**!repeat** - буду повторять очередь, пока ты снова не скажешь мне **!repeat** \n" +
+						"**!clear** *X число* - удаляю последние X сообщений в канале \n" +
 						"**!help** - чтобы я объяснил, как я работаю \n" +
 						"Чтобы я отвечал, ты обязательно должен быть в голосовом канале!")
 				//.setAuthor("от " + track.getInfo().author)
@@ -72,7 +83,6 @@ public abstract class EmbedCreator {
 	}
 	public static void PlayListEmbed(AudioPlaylist playlist, String link, MessageChannel channel)
 	{
-		long time = LocalTime.now().getLong(ChronoField.MILLI_OF_SECOND);
 		int index = link.indexOf('=') + 1;
 		int index1 = link.indexOf('&');
 		if (index == 0)

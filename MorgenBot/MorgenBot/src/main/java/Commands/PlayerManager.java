@@ -38,10 +38,11 @@ public class PlayerManager {
         this.audioPlayerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                channel.sendMessage(String.format("Добавляю в очередь: %s", track.getInfo().title)).queue();
+                channel.sendMessage(String.format("Добавляю в очередь:")).queue();
 
-                EmbedCreator.TrackEmbed(track, trackUrl, channel);
+
                 musicManager.scheduler.queue(track);
+                EmbedCreator.TrackEmbed(track, trackUrl, channel);
 
             }
 

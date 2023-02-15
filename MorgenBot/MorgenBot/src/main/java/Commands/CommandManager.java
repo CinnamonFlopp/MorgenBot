@@ -6,15 +6,20 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import net.dv8tion.jda.api.managers.AudioManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static Commands.ButtonListeners.sendButtons;
 
 
 public class CommandManager extends ListenerAdapter {
@@ -53,7 +58,7 @@ public class CommandManager extends ListenerAdapter {
                         textChannel.sendMessage("Врубаю басы!").queue();
                         PlayerManager.getInstance().loadAndPlay(textChannel, link);
 
-                        message.delete().queueAfter(1, TimeUnit.SECONDS);
+                        message.delete().queueAfter(0, TimeUnit.SECONDS);
                         break;
                     case "!skip":
                         if (audioPlayer.getPlayingTrack() == null) {
@@ -78,7 +83,30 @@ public class CommandManager extends ListenerAdapter {
                         break;
                     case  "!help":
                         EmbedCreator.HelpEmbed(textChannel);
+                        break;
+                    case "!clear":
+                        if(argument.length != 2){
+                            textChannel.sendMessage("Слишком много всего, пиши проще!").queue();
+                            return;
+                        }
 
+                        if (Integer.parseInt(argument[1]) > 99)
+                        {
+                            textChannel.sendMessage("Нельзя удалить больше 99 сообщений за раз!").queue();
+                            return;
+                        }
+
+                        if(!isNumber(argument[1])){
+                            textChannel.sendMessage("Ты написал не число, скорее всего, и я ничего не понял").queue();
+                            return;
+                        }
+
+                        List<Message> messageList = textChannel.getHistory().retrievePast(Integer.parseInt(argument[1]) +1).complete();
+                        textChannel.purgeMessages(messageList);
+                        textChannel.sendMessage("Удаляю последние " + argument[1] + " сообщений").queue();
+                        break;
+                    case  "!Лёха" :
+                        event.getChannel().sendMessage("Ты ждешь Лёху из армии?").setActionRow(sendButtons()).queue();
 
                 }
             }
@@ -89,7 +117,7 @@ public class CommandManager extends ListenerAdapter {
 
 
         private boolean isUrl(String url)
-    {
+        {
         try {
             new URI(url);
             return true;
@@ -98,6 +126,28 @@ public class CommandManager extends ListenerAdapter {
         {
             return false;
         }
+        }
+    private boolean isNumber(String msg)
+    {
+        try {
+            Integer.parseInt(msg);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+
+        if (event.getButton().getId().equals("1")) {
+
+            event.reply( event.getUser().getName() + " - МЕГАПЛОХ!").queue();
+
+        }else if (event.getButton().getId().equals("2")) {
+
+            event.reply(event.getUser().getName() + " - Хорош!").queue();
+
+        }
+
     }
 
 }
