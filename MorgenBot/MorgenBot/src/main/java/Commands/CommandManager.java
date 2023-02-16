@@ -39,16 +39,14 @@ public class CommandManager extends ListenerAdapter {
                 final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
                 AudioPlayer audioPlayer = musicManager.audioPlayer;
                 switch (argument[0]) {
-                    case "!play":
+                    case "!play" -> {
                         String link = argument[1];
                         System.out.println(link);
                         final AudioManager audioManager = event.getGuild().getAudioManager();
                         audioManager.openAudioConnection(voiceChannel);
-                        if (!link.startsWith("https"))
-                        {
+                        if (!link.startsWith("https")) {
                             link = " ";
-                            for (int i = 1; i < argument.length; i++)
-                            {
+                            for (int i = 1; i < argument.length; i++) {
                                 link += argument[i];
                             }
                             link = "ytsearch:" + link;
@@ -57,58 +55,56 @@ public class CommandManager extends ListenerAdapter {
                         }
                         textChannel.sendMessage("Врубаю басы!").queue();
                         PlayerManager.getInstance().loadAndPlay(textChannel, link);
-
                         message.delete().queueAfter(0, TimeUnit.SECONDS);
-                        break;
-                    case "!skip":
+                    }
+                    case "!skip" -> {
                         if (audioPlayer.getPlayingTrack() == null) {
                             textChannel.sendMessage("Не музицирую").queue();
                             return;
                         }
                         textChannel.sendMessage("Cкипаю").queue();
                         musicManager.scheduler.nextTrack();
-                        break;
-                    case "!stop":
+                    }
+                    case "!stop" -> {
                         musicManager.scheduler.audioPlayer.stopTrack();
                         musicManager.scheduler.queue.clear();
-
                         textChannel.sendMessage("Оффаю с позором").queue();
-                        break;
-                    case "!repeat":
+                    }
+                    case "!repeat" -> {
                         final boolean newRepeating = !musicManager.scheduler.repeating;
-
                         musicManager.scheduler.repeating = newRepeating;
-
                         textChannel.sendMessageFormat("Теперь я **%s**", newRepeating ? "повторяю" : "не повторяю").queue();
-                        break;
-                    case  "!help":
-                        EmbedCreator.HelpEmbed(textChannel);
-                        break;
-                    case "!clear":
-                        if(argument.length != 2){
+                    }
+                    case "!help" -> EmbedCreator.HelpEmbed(textChannel);
+                    case "!clear" -> {
+                        if (argument.length != 2) {
                             textChannel.sendMessage("Слишком много всего, пиши проще!").queue();
                             return;
                         }
-
-                        if (Integer.parseInt(argument[1]) > 99)
-                        {
+                        if (Integer.parseInt(argument[1]) > 99) {
                             textChannel.sendMessage("Нельзя удалить больше 99 сообщений за раз!").queue();
                             return;
                         }
-
-                        if(!isNumber(argument[1])){
+                        if (!isNumber(argument[1])) {
                             textChannel.sendMessage("Ты написал не число, скорее всего, и я ничего не понял").queue();
                             return;
                         }
-
-                        List<Message> messageList = textChannel.getHistory().retrievePast(Integer.parseInt(argument[1]) +1).complete();
+                        List<Message> messageList = textChannel.getHistory().retrievePast(Integer.parseInt(argument[1]) + 1).complete();
                         textChannel.purgeMessages(messageList);
                         textChannel.sendMessage("Удаляю последние " + argument[1] + " сообщений").queue();
-                        break;
-                    case  "!Лёха" :
-                        event.getChannel().sendMessage("Ты ждешь Лёху из армии?").setActionRow(sendButtons()).queue();
-
+                    }
+                    case "!Лёха" ->
+                            event.getChannel().sendMessage("Ты ждешь Лёху из армии?").setActionRow(sendButtons()).queue();
+                    case "!pause" -> {
+                        musicManager.scheduler.audioPlayer.setPaused(true);
+                        textChannel.sendMessage("Приостановил").queue();
+                    }
+                    case "!resume" -> {
+                        musicManager.scheduler.audioPlayer.setPaused(false);
+                        textChannel.sendMessage("Продолжаем!").queue();
+                    }
                 }
+
             }
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());

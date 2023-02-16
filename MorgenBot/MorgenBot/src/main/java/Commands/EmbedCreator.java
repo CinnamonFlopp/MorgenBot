@@ -1,28 +1,17 @@
 package Commands;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.awt.*;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.temporal.ChronoField;
-import java.util.Date;
-import java.util.Random;
 
+import static Commands.ButtonListeners.ResPaus;
+import static Commands.ButtonListeners.sendButtons;
 import static Commands.MorgenLines.MorgenLine;
 
 public abstract class EmbedCreator {
-
-
-
 
 
 	public static void TrackEmbed(AudioTrack track, String link, MessageChannel channel) {
@@ -57,20 +46,22 @@ public abstract class EmbedCreator {
 				.setFooter(MorgenLine() , "https://sun9-75.userapi.com/impg/GCjYWYxKOJibJF2E_voTY42dBbaVG8cuEb7U9g/yQqbKn9lCHQ.jpg?size=463x509&quality=95&sign=f75408c71da1900281d0a60c7508794c&c_uniq_tag=xw9dNUUaxrMtWQC_FjadXdlhZMDc_EyxDDtt-7E3Csk&type=album")
 				.setImage(thumbnail);
 				//.setThumbnail(new File("C:/Users/Bastian/Pictures/kitten2.png"));
-		channel.sendMessageEmbeds(embedMusic.build()).queue();
+		channel.sendMessageEmbeds(embedMusic.build()).setActionRow(ResPaus()).queue();
 	}
 	public static void HelpEmbed(MessageChannel channel)
 	{
 		EmbedBuilder embedMusic = new EmbedBuilder()
 				.setTitle("Я бот - Морген")
-				.setDescription("**Умею всё, но я занятой, так что отвечаю только на эти сообщения:** \n" +
-						"**!play** *ссылка или поиск по ютубу* - и я сыграю любой трек, но особенно буду рад собственным хитам \n" +
-						"**!skip** - я скипну трек\n" +
-						"**!stop** - и я оффну\n" +
-						"**!repeat** - буду повторять очередь, пока ты снова не скажешь мне **!repeat** \n" +
-						"**!clear** *X число* - удаляю последние X сообщений в канале \n" +
-						"**!help** - чтобы я объяснил, как я работаю \n" +
-						"Чтобы я отвечал, ты обязательно должен быть в голосовом канале!")
+				.setDescription("""
+						**Умею всё, но я занятой, так что отвечаю только на эти сообщения:**\s
+						**!play** *ссылка или поиск по ютубу* - и я сыграю любой трек, но особенно буду рад собственным хитам\s
+						**!skip** - я скипну трек
+						**!stop** - и я оффну
+						**!repeat** - буду повторять очередь, пока ты снова не скажешь мне **!repeat**\s
+						**!clear** *X число* - удаляю последние X сообщений в канале\s
+						**!pause** - чтобы я поставил на паузу и **!resume** чтобы продолжить\s
+						**!help** - чтобы я объяснил, как я работаю\s
+						Чтобы я отвечал, ты обязательно должен быть в голосовом канале!""")
 				//.setAuthor("от " + track.getInfo().author)
 				//.addField("", link,true)
 				//.addInlineField("An inline field", "More text")
@@ -105,7 +96,7 @@ public abstract class EmbedCreator {
 				.setFooter(MorgenLine(), "https://sun9-75.userapi.com/impg/GCjYWYxKOJibJF2E_voTY42dBbaVG8cuEb7U9g/yQqbKn9lCHQ.jpg?size=463x509&quality=95&sign=f75408c71da1900281d0a60c7508794c&c_uniq_tag=xw9dNUUaxrMtWQC_FjadXdlhZMDc_EyxDDtt-7E3Csk&type=album")
 				.setImage(thumbnail);
 		//.setThumbnail(new File("C:/Users/Bastian/Pictures/kitten2.png"));
-		channel.sendMessageEmbeds(embedMusic.build()).queue();
+		channel.sendMessageEmbeds(embedMusic.build()).setActionRow(ResPaus()).queue();
 	}
 
 }

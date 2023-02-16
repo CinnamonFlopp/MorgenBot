@@ -1,11 +1,8 @@
 package Commands;
 
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,23 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ButtonListeners extends ListenerAdapter {
-    private final String[] BlackWords = {"Лёха", "Леха","Алекей"};
-
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
 
 
-        for (String blackWord : BlackWords) {
-            if (event.getMessage().getContentRaw().contains(blackWord)) {
-
-                event.getChannel().sendMessage("Ты ждешь Лёху из армии?").setActionRow(sendButtons()).queue();
-
-
-
-            }
-        }
-
-    }
     public static List<Button> sendButtons()
     {
         List<Button> buttons = new ArrayList<>();
@@ -39,16 +22,38 @@ public class ButtonListeners extends ListenerAdapter {
     }
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+        final GuildMusicManager musicManager = PlayerManager.getInstance().getMusicManager(event.getGuild());
 
         if (event.getButton().getId().equals("1")) {
 
             event.reply("МЕГАПЛОХ!").queue();
 
-        }else if (event.getButton().getId().equals("2")) {
+        }
+        if (event.getButton().getId().equals("2")) {
 
             event.reply("Хорош!").queue();
 
         }
+        if (event.getButton().getId().equals("3")) {
+
+            musicManager.scheduler.audioPlayer.setPaused(true);
+            event.reply("Приостановил ⏸").queue();
+
+        }
+        if (event.getButton().getId().equals("4")) {
+
+            musicManager.scheduler.audioPlayer.setPaused(false);
+            event.reply("Продолжаем ▶").queue();
+
+        }
 
     }
+    public static List<Button> ResPaus()
+    {
+        List<Button> buttons = new ArrayList<>();
+        buttons.add(Button.primary("3", "⏸"));
+        buttons.add(Button.primary("4", "▶"));
+        return buttons;
+    }
+
 }
