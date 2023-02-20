@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 
+import java.util.Random;
+
 import static Commands.ButtonListeners.ResPaus;
 import static Commands.ButtonListeners.sendButtons;
 import static Commands.MorgenLines.MorgenLine;
@@ -97,6 +99,23 @@ public abstract class EmbedCreator {
 				.setImage(thumbnail);
 		//.setThumbnail(new File("C:/Users/Bastian/Pictures/kitten2.png"));
 		channel.sendMessageEmbeds(embedMusic.build()).setActionRow(ResPaus()).queue();
+	}
+	public static void MorgenEmbed(MessageChannel channel)
+	{
+		Random rnd = new Random();
+		int r = rnd.nextInt(Utils.MorgenPhoto.MorgenLength());
+		EmbedBuilder embedMusic = new EmbedBuilder()
+				.setTitle("Какой ты сегодня Морген:")
+				.setDescription(Utils.MorgenPhoto.MorgenGetStatus(r))
+				.setAuthor("")
+				//.addField("", link,true)
+				//.addInlineField("An inline field", "More text")
+				//.addInlineField("Another inline field", "Even more text")
+				.setColor(2895667)
+				.setFooter(MorgenLine(), "https://sun9-75.userapi.com/impg/GCjYWYxKOJibJF2E_voTY42dBbaVG8cuEb7U9g/yQqbKn9lCHQ.jpg?size=463x509&quality=95&sign=f75408c71da1900281d0a60c7508794c&c_uniq_tag=xw9dNUUaxrMtWQC_FjadXdlhZMDc_EyxDDtt-7E3Csk&type=album")
+				.setImage(Utils.MorgenPhoto.MorgenGetPhoto(r));
+		//.setThumbnail(new File("C:/Users/Bastian/Pictures/kitten2.png"));
+		channel.sendMessageEmbeds(embedMusic.build()).queue();
 	}
 
 }

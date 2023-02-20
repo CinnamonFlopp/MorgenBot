@@ -103,6 +103,9 @@ public class CommandManager extends ListenerAdapter {
                         musicManager.scheduler.audioPlayer.setPaused(false);
                         textChannel.sendMessage("Продолжаем!").queue();
                     }
+                    case "!morgen" -> {
+                        EmbedCreator.MorgenEmbed(textChannel);
+                    }
                 }
 
             }

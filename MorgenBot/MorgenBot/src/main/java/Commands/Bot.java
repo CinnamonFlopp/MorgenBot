@@ -17,7 +17,7 @@ public class Bot {
 
 
     public static void main(String[] args) {
-        JDABuilder jdaBuilder = JDABuilder.createDefault("");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("MTA3MTMxODMxMDg2NTYwNDczOA.GgFnvj.iBb8PzhnaW-o4zSKvClK8u0VMlKuGA0vZiMy6E");
         jdaBuilder.enableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE,CacheFlag.ACTIVITY);
         jdaBuilder.setActivity(Activity.listening(MorgenLine()));
         jdaBuilder.setBulkDeleteSplittingEnabled(false);
